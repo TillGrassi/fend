@@ -26,67 +26,63 @@ const sectionContent = document.querySelectorAll("section");
 const navbarList = document.getElementById("navbar__list");
 
 
-
 /**
  * End Global Variables
- * Start Helper Functions
- *
 */
+// build the nav
 function createNavbar() {
-    sectionContent.forEach((section) => {
-      console.log(section);
-      const listItem = document.createElement('li');
-      const listItemLink = document.createElement('a');
+    sectionContent.forEach((section, i) => {
+      const listItem = document.createElement("li");
+      const listItemLink = document.createElement("a");
       listItemLink.textContent = section.id;
+      listItemLink.classList.add("menu__link");
+      listItemLink.classList.add("section"+(i+1));
       listItem.appendChild(listItemLink);
       navbarList.appendChild(listItem);
     });
 };
 createNavbar();
 
+// Checking for active State Helperfunctions
 function addActiveState(section) {
     const id = section.getAttribute("id");
     document.querySelector(`#${id}`).classList.add("your-active-class");
+    document.querySelector(`.${id}`).classList.add("active");
 };
 
 function removeActiveState(section) {
     const id = section.getAttribute("id");
     document.querySelector(`#${id}`).classList.remove("your-active-class");
+    document.querySelector(`.${id}`).classList.remove("active");
 };
-/**
- * End Helper Functions
- * Begin Main Functions
- *
-*/
+
+// Add class 'active' to section when near top of viewport
 function checkIfActive() {
     sectionContent.forEach((section) => {
       let check = section.getBoundingClientRect();
       if (check.top <= 150 && check.bottom >= 150) {
         addActiveState(section);
-      };
+      }
       else {
         removeActiveState(section);
-      };
+      }
 
     });
 };
-// build the nav
+document.addEventListener("scroll", checkIfActive);
 
-
-// Add class 'active' to section when near top of viewport
 
 
 // Scroll to anchor ID using scrollTO event
+let navbarItems = document.querySelectorAll("li");
+function scrollToSection() {
+    navbarItems.forEach((item, i) => {
+        item.addEventListener("click", function() {
+            event.preventDefault();
+            let element = document.getElementById("section"+(i+1));
+            element.scrollIntoView({behavior: "smooth"});
+        });
+    });
 
-
-/**
- * End Main Functions
- * Begin Events
- *
-*/
-
-// Build menu
-
-// Scroll to section on link click
-
-// Set sections as active
+};
+scrollToSection();
